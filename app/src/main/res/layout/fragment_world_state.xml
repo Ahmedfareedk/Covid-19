@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".ui.world.WorldStateFragment">
+
+    <ImageView
+        android:id="@+id/world_logo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/world"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/world_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="World"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/world_logo"
+        app:layout_constraintTop_toTopOf="@id/world_logo" />
+
+    <TextView
+        android:id="@+id/world_date_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="April 6 2020"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@id/world_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/world_text_view" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/world_logo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/world_logo">
+
+        <LinearLayout
+            android:id="@+id/parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/world_layout_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/world_layout_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:padding="8dp"
+                    android:text="@string/new_label_text"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_label_text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/new_world_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:text="+30"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_value_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/world_layout_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/world_layout_padding">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:padding="8dp"
+                    android:text="@string/active_label_text"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_label_text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/active_world_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:textColor="@color/label_color"
+                    android:text="+30"
+                    android:textSize="@dimen/world_value_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/world_layout_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/world_layout_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:padding="8dp"
+                    android:text="@string/critical_label_text"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_label_text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/critical_world_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:text="+30"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_value_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/world_layout_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/world_layout_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:padding="8dp"
+                    android:text="@string/recovered_label_text"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_label_text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/recovered_world_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:textColor="@color/label_color"
+                    android:text="+30"
+
+                    android:textSize="@dimen/world_value_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/world_layout_background"
+                android:orientation="horizontal"
+                android:padding="@dimen/world_layout_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:padding="8dp"
+                    android:text="@string/total_label_text"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_label_text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/total_world_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:text="+30"
+                    android:textColor="@color/label_color"
+                    android:textSize="@dimen/world_value_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/death_layout_background"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/death_label_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Death"
+                    android:textColor="@color/death_linear_layout_background"
+                    android:textSize="@dimen/world_value_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <LinearLayout
+                    android:id="@+id/new_death_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/death_linear_layout_background"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/world_layout_padding"
+                    app:layout_constraintLeft_toLeftOf="@id/death_label_text_view"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/death_label_text_view">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="8dp"
+                        android:text="@string/new_label_text"
+                        android:textColor="@color/death_layout_color"
+                        android:textSize="@dimen/world_label_text_size" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/new_death_world_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="8dp"
+                        android:text="+30"
+                        android:textColor="@color/death_layout_color"
+                        android:textSize="@dimen/world_value_text_size"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/death_linear_layout_background"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/world_layout_padding"
+                    app:layout_constraintLeft_toLeftOf="@id/death_label_text_view"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/new_death_linear_layout">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="8dp"
+                        android:text="@string/total_label_text"
+                        android:textColor="@color/death_layout_color"
+                        android:textSize="@dimen/world_label_text_size" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/total_death_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="8dp"
+                        android:text="+30"
+                        android:textColor="@color/death_layout_color"
+                        android:textSize="@dimen/world_value_text_size"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

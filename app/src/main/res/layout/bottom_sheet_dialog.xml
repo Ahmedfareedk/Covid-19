@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_background"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/close_dialog"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_gravity="end"
+        android:src="@drawable/close"/>
+
+    <ImageView
+        android:id="@+id/bottom_sheet_flag_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/bottom_sheet_country_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Egypt"
+        android:textColor="@color/death_layout_color"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/bottom_sheet_day_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"
+        android:text="22 April 2020"
+        android:textColor="#393e46"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/view_separator_background" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingLeft="12dp">
+
+            <TextView
+                android:id="@+id/bottom_cases_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Cases"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/bottom_new_cases_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/cases_label_margin_right"
+                android:layout_marginTop="8dp"
+                android:text="@string/new_cases_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/new_sep"
+                app:layout_constraintTop_toBottomOf="@+id/bottom_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_new_cases_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="250"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="#3C3C3C"
+                android:textSize="@dimen/text_value_size"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_new_cases_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_new_cases_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_new_cases_label" />
+
+            <View
+                android:id="@+id/new_sep"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginRight="12dp"
+                android:background="@color/view_separator_background"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_new_cases_value"
+                app:layout_constraintRight_toLeftOf="@id/bottom_active_cases_label"
+                app:layout_constraintTop_toTopOf="@id/bottom_new_cases_label" />
+
+
+            <TextView
+                android:id="@+id/bottom_active_cases_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/cases_label_margin_right"
+                android:layout_marginTop="8dp"
+                android:text="@string/active_cases_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintRight_toLeftOf="@id/active_sep"
+                app:layout_constraintTop_toBottomOf="@id/bottom_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_active_cases_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="250"
+                android:textColor="@color/bottom_values_color"
+                android:textSize="@dimen/text_value_size"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_active_cases_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_active_cases_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_active_cases_label"
+
+                />
+
+            <View
+                android:id="@+id/active_sep"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginRight="12dp"
+                android:background="@color/view_separator_background"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_active_cases_value"
+                app:layout_constraintRight_toLeftOf="@id/bottom_critical_cases_label"
+                app:layout_constraintTop_toTopOf="@id/bottom_active_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_critical_cases_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/cases_label_margin_right"
+                android:layout_marginTop="8dp"
+                android:text="@string/critical_cases_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintRight_toLeftOf="@id/critical_sep"
+                app:layout_constraintTop_toBottomOf="@id/bottom_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_critical_cases_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textStyle="bold"
+                android:text="250"
+                android:gravity="center"
+                android:textColor="@color/bottom_values_color"
+                android:textSize="@dimen/text_value_size"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_critical_cases_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_critical_cases_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_critical_cases_label"
+
+                />
+
+            <View
+                android:id="@+id/critical_sep"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="12dp"
+                android:background="@color/view_separator_background"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_critical_cases_value"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_cases_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_cases_label"
+                app:layout_constraintTop_toTopOf="@id/bottom_critical_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_recovered_cases_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/cases_label_margin_right"
+                android:layout_marginTop="8dp"
+                android:text="@string/recovered_cases_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintLeft_toRightOf="@id/critical_sep"
+                app:layout_constraintTop_toBottomOf="@id/bottom_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_recovered_cases_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="250"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/bottom_values_color"
+                android:textSize="@dimen/text_value_size"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_recovered_cases_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_recovered_cases_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_recovered_cases_label"
+
+                />
+
+            <View
+                android:id="@+id/recovered_sep"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="12dp"
+                android:background="@color/view_separator_background"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_recovered_cases_value"
+                app:layout_constraintLeft_toRightOf="@id/bottom_recovered_cases_label"
+                app:layout_constraintTop_toTopOf="@id/bottom_recovered_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_total_cases_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/cases_label_margin_right"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/black"
+                android:text="@string/total_cases_label"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintLeft_toRightOf="@id/recovered_sep"
+                app:layout_constraintTop_toBottomOf="@id/bottom_cases_label" />
+
+            <TextView
+                android:id="@+id/bottom_total_cases_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textStyle="bold"
+                android:text="250"
+                android:gravity="center"
+                android:textColor="@color/bottom_values_color"
+                android:textSize="@dimen/text_value_size"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_total_cases_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_total_cases_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_total_cases_label"
+
+                />
+
+            <View
+                android:id="@+id/cases_sep"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/view_separator_background"
+                app:layout_constraintTop_toBottomOf="@id/bottom_new_cases_value" />
+
+            <TextView
+                android:id="@+id/bottom_deaths_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/death_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_cases_label"
+                app:layout_constraintTop_toBottomOf="@id/cases_sep" />
+
+            <TextView
+                android:id="@+id/bottom_new_death_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/new_cases_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintRight_toLeftOf="@id/bottom_deaths_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_deaths_label" />
+
+            <TextView
+                android:id="@+id/bottom_new_death_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="250"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/bottom_values_color"
+                android:textSize="@dimen/text_value_size"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_new_death_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_new_death_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_new_death_label"
+
+                />
+
+            <View
+                android:id="@+id/death_sep"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:background="@color/view_separator_background"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_new_death_value"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_deaths_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_deaths_label"
+                app:layout_constraintTop_toTopOf="@id/bottom_new_death_label" />
+
+
+            <TextView
+                android:id="@+id/bottom_total_death_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/total_cases_label"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_label_size"
+                app:layout_constraintLeft_toRightOf="@id/bottom_deaths_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_deaths_label" />
+
+            <TextView
+                android:id="@+id/bottom_total_death_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="250"
+                android:textColor="@color/bottom_values_color"
+                android:textSize="@dimen/text_value_size"
+                android:gravity="center"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_total_death_label"
+                app:layout_constraintRight_toRightOf="@id/bottom_total_death_label"
+                app:layout_constraintTop_toBottomOf="@id/bottom_total_death_label"
+
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

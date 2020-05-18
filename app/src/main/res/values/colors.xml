@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="world_layout_background">#BC133337</color>
+    <color name="label_color">#F5F2D0</color>
+    <color name="death_linear_layout_background">#DDF5F2D0</color>
+    <color name="death_layout_color">#0E2F44</color>
+    <color name="recycler_view_background">#A3BDBDBD</color>
+    <color name="view_separator_background">#393e46</color>
+    <color name="bottom_values_color">#3C3C3C</color>
+</resources>
