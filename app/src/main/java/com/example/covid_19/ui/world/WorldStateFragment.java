@@ -58,7 +58,7 @@ public class WorldStateFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_world_state, container, false);
 
-        Networking.fetch(new OnCasesLisneter() {
+        Networking.fetch(new OnCasesLisneter<Response>() {
             @Override
             public void onResponse(Response cases) {
                 newCasesTV.setText(cases.getCases().getNew());
@@ -90,11 +90,4 @@ public class WorldStateFragment extends Fragment {
         totalDeathsTV = view.findViewById(R.id.total_death_text_view);
         setHasOptionsMenu(true);
     }
-/*
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_item, menu);
-        menu.findItem(R.id.action_search).setVisible(false);
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
 }
