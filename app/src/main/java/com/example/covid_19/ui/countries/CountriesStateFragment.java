@@ -1,57 +1,83 @@
 package com.example.covid_19.ui.countries;
 
 
-import android.media.Image;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.GridLayout;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.covid_19.R;
 import com.example.covid_19.adapter.CountriesAdapter;
-import com.example.covid_19.callback.OnCountryDataListener;
 import com.example.covid_19.callback.OnCountryListener;
-
 import com.example.covid_19.model.stats.Statistics;
 import com.example.covid_19.network.Networking;
-import com.example.covid_19.utils.GridAutoFitLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CountriesStateFragment extends Fragment {
-    private RecyclerView countriesRecyclerView;
+public class CountriesStateFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+    @Nullable
+    @BindView(R.id.countries_recycler_view)
+    RecyclerView countriesRecyclerView;
+
+
+    @BindView(R.id.close_dialog)
+    ImageView closeDialog;
+    @BindView(R.id.bottom_sheet_flag_image)
+    ImageView bottomSheetFlagImage;
+    @BindView(R.id.bottom_sheet_country_name)
+    TextView bottomSheetCountryName;
+    @BindView(R.id.bottom_sheet_day_date)
+    TextView bottomSheetDayDate;
+    @BindView(R.id.bottom_sheet_date_picker)
+    ImageView bottomSheetDatePicker;
+
+
+    @BindView(R.id.bottom_new_cases_value)
+    TextView bottomNewCasesValue;
+
+
+    @BindView(R.id.bottom_active_cases_value)
+    TextView bottomActiveCasesValue;
+
+    @BindView(R.id.bottom_critical_cases_value)
+    TextView bottomCriticalCasesValue;
+
+    @BindView(R.id.bottom_recovered_cases_value)
+    TextView bottomRecoveredCasesValue;
+    @BindView(R.id.bottom_total_cases_value)
+    TextView bottomTotalCasesValue;
+    @BindView(R.id.bottom_new_death_value)
+    TextView bottomNewDeathValue;
+    @BindView(R.id.bottom_total_death_value)
+    TextView bottomTotalDeathValue;
     private CountriesAdapter countriesAdapter;
-    private TextView countryName, dayDate, countryNewCases,
-            countryActiveCases, countryCriticalCases, countryRecoveredCases,
-            countryTotalCases, countryNewDeath, countryTotalDeath;
-    private ImageView countryFlag;
-    private ImageView closeBottomSheetImage;
+
 
 
     public CountriesStateFragment() {
@@ -74,6 +100,7 @@ public class CountriesStateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_countries_state, container, false);
+        ButterKnife.bind(getActivity(), view);
 
         Networking.fetchCountry(new OnCountryListener() {
 
@@ -123,33 +150,13 @@ public class CountriesStateFragment extends Fragment {
         BottomSheetDialog countryDetailsDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
         View bottomSheetView = LayoutInflater.from(getContext())
                 .inflate(R.layout.bottom_sheet_dialog, container, false);
+        ButterKnife.bind(this, bottomSheetView);
 
-        countryName = bottomSheetView.findViewById(R.id.bottom_sheet_country_name);
-        dayDate = bottomSheetView.findViewById(R.id.bottom_sheet_day_date);
-        countryNewCases = bottomSheetView.findViewById(R.id.bottom_new_cases_value);
-        countryActiveCases = bottomSheetView.findViewById(R.id.bottom_active_cases_value);
-        countryCriticalCases = bottomSheetView.findViewById(R.id.bottom_critical_cases_value);
-        countryRecoveredCases = bottomSheetView.findViewById(R.id.bottom_recovered_cases_value);
-        countryTotalCases = bottomSheetView.findViewById(R.id.bottom_total_cases_value);
-        countryNewDeath = bottomSheetView.findViewById(R.id.bottom_new_death_value);
-        countryTotalDeath = bottomSheetView.findViewById(R.id.bottom_total_death_value);
-        countryFlag = bottomSheetView.findViewById(R.id.bottom_sheet_flag_image);
-        closeBottomSheetImage = bottomSheetView.findViewById(R.id.close_dialog);
+        //fill views data we get from callback
+        fillViewsData(countryData);
 
-
-        countryName.setText(String.valueOf(countryData.get(getString(R.string.country_name))));
-        dayDate.setText(String.valueOf(countryData.get(getString(R.string.day_date))));
-        countryNewCases.setText(String.valueOf(countryData.get(getString(R.string.new_cases_sheet))));
-        countryActiveCases.setText(String.valueOf(countryData.get(getString(R.string.active_cases_sheet))));
-        countryCriticalCases.setText(String.valueOf(countryData.get(getString(R.string.critical_cases_sheet))));
-        countryRecoveredCases.setText(String.valueOf(countryData.get(getString(R.string.recovered_cases_sheet))));
-        countryTotalCases.setText(String.valueOf(countryData.get(getString(R.string.total_cases_sheet))));
-        countryNewDeath.setText(String.valueOf(countryData.get(getString(R.string.new_death_sheet))));
-        countryTotalDeath.setText(String.valueOf(countryData.get(getString(R.string.total_death_sheet))));
-
-        Picasso.get().load(String.valueOf(countryData.get(getString(R.string.flag_url_sheet)))).into(countryFlag);
-
-        closeBottomSheetImage.setOnClickListener(v -> countryDetailsDialog.dismiss());
+        closeDialog.setOnClickListener(v -> countryDetailsDialog.dismiss());
+        bottomSheetDatePicker.setOnClickListener(v -> buildDatePickerDialog());
         countryDetailsDialog.setContentView(bottomSheetView);
         countryDetailsDialog.setCancelable(false);
         countryDetailsDialog.setDismissWithAnimation(true);
@@ -157,4 +164,30 @@ public class CountriesStateFragment extends Fragment {
         countryDetailsDialog.show();
     }
 
+    private void buildDatePickerDialog() {
+        DatePickerDialog stateDatePicker = new DatePickerDialog(getContext(), this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        stateDatePicker.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        bottomSheetDayDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+    }
+
+    private void fillViewsData(Map<String, Object> passedCountryData){
+        bottomSheetCountryName.setText(String.valueOf(passedCountryData.get(getString(R.string.country_name))));
+        bottomSheetDayDate.setText(String.valueOf(passedCountryData.get(getString(R.string.day_date))));
+        bottomNewCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.new_cases_sheet))));
+        bottomActiveCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.active_cases_sheet))));
+        bottomCriticalCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.critical_cases_sheet))));
+        bottomRecoveredCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.recovered_cases_sheet))));
+        bottomTotalCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.total_cases_sheet))));
+        bottomNewDeathValue.setText(String.valueOf(passedCountryData.get(getString(R.string.new_death_sheet))));
+        bottomTotalDeathValue.setText(String.valueOf(passedCountryData.get(getString(R.string.total_death_sheet))));
+
+        Picasso.get().load(String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))).into(bottomSheetFlagImage);
+    }
 }

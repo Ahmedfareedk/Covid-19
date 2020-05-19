@@ -20,7 +20,6 @@ import com.example.covid_19.callback.OnCountryListener;
 import com.example.covid_19.model.stats.Response;
 import com.example.covid_19.utils.Constants;
 import com.example.covid_19.utils.ParseJson;
-import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -106,6 +105,9 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             listener.onCountryItemListener(countryData);
         }
     }
+
+
+
 
     @Override
     public Filter getFilter() {

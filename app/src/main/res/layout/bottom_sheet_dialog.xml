@@ -32,15 +32,32 @@
         android:textColor="@color/death_layout_color"
         android:textSize="18sp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
     <TextView
         android:id="@+id/bottom_sheet_day_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
         android:text="22 April 2020"
         android:textColor="#393e46"
         android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/bottom_sheet_date_picker"
+            android:src="@drawable/ic_date_range_black_24dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -107,7 +124,7 @@
                 android:id="@+id/new_sep"
                 android:layout_width="1dp"
                 android:layout_height="0dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/view_separator_background"
                 app:layout_constraintBottom_toBottomOf="@id/bottom_new_cases_value"
                 app:layout_constraintRight_toLeftOf="@id/bottom_active_cases_label"
