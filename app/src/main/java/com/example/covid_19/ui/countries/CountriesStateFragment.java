@@ -24,12 +24,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.covid_19.R;
 import com.example.covid_19.adapter.CountriesAdapter;
+import com.example.covid_19.callback.OnCasesLisneter;
 import com.example.covid_19.callback.OnCountryListener;
+import com.example.covid_19.model.history_stats.HistoryResponse;
+import com.example.covid_19.model.history_stats.HistoryStatistics;
+import com.example.covid_19.model.stats.Response;
 import com.example.covid_19.model.stats.Statistics;
 import com.example.covid_19.network.Networking;
+import com.example.covid_19.utils.DateFormatter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -44,8 +51,6 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     @Nullable
     @BindView(R.id.countries_recycler_view)
     RecyclerView countriesRecyclerView;
-
-
     @BindView(R.id.close_dialog)
     ImageView closeDialog;
     @BindView(R.id.bottom_sheet_flag_image)
@@ -56,18 +61,12 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     TextView bottomSheetDayDate;
     @BindView(R.id.bottom_sheet_date_picker)
     ImageView bottomSheetDatePicker;
-
-
     @BindView(R.id.bottom_new_cases_value)
     TextView bottomNewCasesValue;
-
-
     @BindView(R.id.bottom_active_cases_value)
     TextView bottomActiveCasesValue;
-
     @BindView(R.id.bottom_critical_cases_value)
     TextView bottomCriticalCasesValue;
-
     @BindView(R.id.bottom_recovered_cases_value)
     TextView bottomRecoveredCasesValue;
     @BindView(R.id.bottom_total_cases_value)
@@ -102,7 +101,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         final View view = inflater.inflate(R.layout.fragment_countries_state, container, false);
         ButterKnife.bind(getActivity(), view);
 
-        Networking.fetchCountry(new OnCountryListener() {
+        Networking.fetchCountry(new OnCountryListener<Statistics>() {
 
             @Override
             public void onResponse(Statistics response) {
@@ -174,7 +173,28 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        bottomSheetDayDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+
+        String date = DateFormatter.dateFormatter(dayOfMonth, month, year);
+        Networking.fetchCountryDate(getContext(), date, bottomSheetCountryName.getText().toString(),new OnCountryListener<HistoryResponse>() {
+            @Override
+            public void onResponse(HistoryResponse response) {
+
+                bottomSheetDayDate.setText(response.getDay());
+                bottomNewCasesValue.setText(response.getCases().getNew());
+                bottomActiveCasesValue.setText(String.valueOf(response.getCases().getActive()));
+                bottomCriticalCasesValue.setText(String.valueOf(response.getCases().getCritical()));
+                bottomRecoveredCasesValue.setText(String.valueOf(response.getCases().getRecovered()));
+                bottomTotalCasesValue.setText(String.valueOf(response.getCases().getTotal()));
+                bottomNewDeathValue.setText(String.valueOf(response.getDeaths().getNew()));
+                bottomTotalDeathValue.setText(String.valueOf(response.getDeaths().getTotal()));
+
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void fillViewsData(Map<String, Object> passedCountryData){
