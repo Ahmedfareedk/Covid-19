@@ -10,4 +10,5 @@
     <color name="recycler_view_background">#A3BDBDBD</color>
     <color name="view_separator_background">#393e46</color>
     <color name="bottom_values_color">#3C3C3C</color>
+    <color name="vlaues_color">#3C3C3C</color>
 </resources>

@@ -24,8 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:text="World"
+        android:text="@string/world"
         android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/view_separator_background"
         app:layout_constraintLeft_toRightOf="@+id/world_logo"
         app:layout_constraintTop_toTopOf="@id/world_logo" />
 
@@ -33,9 +35,10 @@
         android:id="@+id/world_date_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:text="April 6 2020"
-        android:textSize="14sp"
+        android:textSize="12sp"
+        android:textColor="@color/view_separator_background"
         app:layout_constraintLeft_toLeftOf="@id/world_text_view"
         app:layout_constraintTop_toBottomOf="@+id/world_text_view" />
 

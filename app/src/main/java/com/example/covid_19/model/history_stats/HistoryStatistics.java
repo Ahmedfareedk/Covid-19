@@ -1,19 +1,20 @@
 
-package com.example.covid_19.model.statistics.worldStatistics;
+package com.example.covid_19.model.history_stats;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class WorldStatistics {
+
+public class HistoryStatistics {
 
     @SerializedName("errors")
     private List<Object> mErrors;
     @SerializedName("get")
     private String mGet;
     @SerializedName("parameters")
-    private WorldParameters mParameters;
+    private HistoryParameters mParameters;
     @SerializedName("response")
-    private List<WorldResponse> mResponse;
+    private List<HistoryResponse> mResponse;
     @SerializedName("results")
     private Long mResults;
 
@@ -33,19 +34,19 @@ public class WorldStatistics {
         mGet = get;
     }
 
-    public WorldParameters getParameters() {
+    public HistoryParameters getParameters() {
         return mParameters;
     }
 
-    public void setParameters(WorldParameters parameters) {
+    public void setParameters(HistoryParameters parameters) {
         mParameters = parameters;
     }
 
-    public List<WorldResponse> getResponse() {
+    public List<HistoryResponse> getResponse() {
         return mResponse;
     }
 
-    public void setResponse(List<WorldResponse> response) {
+    public void setResponse(List<HistoryResponse> response) {
         mResponse = response;
     }
 

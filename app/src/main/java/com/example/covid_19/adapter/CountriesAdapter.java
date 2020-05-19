@@ -1,7 +1,6 @@
 package com.example.covid_19.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +8,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.covid_19.R;
 import com.example.covid_19.callback.OnCountryDataListener;
-import com.example.covid_19.callback.OnCountryListener;
 import com.example.covid_19.model.stats.Response;
+
 import com.example.covid_19.utils.Constants;
 import com.example.covid_19.utils.ParseJson;
 import com.squareup.picasso.Picasso;
@@ -64,7 +62,6 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     public class CountriesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView countryLabel;
         private ImageView countryFlag;
-        private Response mModel;
         private String countryCode;
 
 
@@ -76,7 +73,6 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
         }
 
         private void bindViews(final Response model) {
-            mModel = model;
             countryLabel.setText(model.getCountry());
             countryCode = ParseJson.readCountryCode(mContext, model.getCountry());
             Picasso.get().load(Constants.FlagIoApi.LOAD_FLAG_URL + countryCode + Constants.FlagIoApi.FLAG_STYLE)
@@ -141,6 +137,4 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             notifyDataSetChanged();
         }
     };
-
-
 }

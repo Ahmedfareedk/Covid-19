@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.covid_19.R;
 import com.example.covid_19.adapter.CountriesAdapter;
-import com.example.covid_19.callback.OnCasesLisneter;
 import com.example.covid_19.callback.OnCountryListener;
-import com.example.covid_19.model.history_stats.HistoryResponse;
-import com.example.covid_19.model.history_stats.HistoryStatistics;
+import com.example.covid_19.model.statistics.worldStatistics.WorldResponse;
+import com.example.covid_19.model.statistics.worldStatistics.WorldStatistics;
 import com.example.covid_19.model.stats.Response;
 import com.example.covid_19.model.stats.Statistics;
 import com.example.covid_19.network.Networking;
@@ -35,8 +33,6 @@ import com.example.covid_19.utils.DateFormatter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -175,11 +171,11 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
         String date = DateFormatter.dateFormatter(dayOfMonth, month, year);
-        Networking.fetchCountryDate(getContext(), date, bottomSheetCountryName.getText().toString(),new OnCountryListener<HistoryResponse>() {
+        Networking.fetchCountryDate(getContext(), date, bottomSheetCountryName.getText().toString(),new OnCountryListener<WorldResponse>() {
             @Override
-            public void onResponse(HistoryResponse response) {
+            public void onResponse(WorldResponse response) {
 
-                bottomSheetDayDate.setText(response.getDay());
+                bottomSheetDayDate.setText(DateFormatter.monthName(dayOfMonth,month,year));
                 bottomNewCasesValue.setText(response.getCases().getNew());
                 bottomActiveCasesValue.setText(String.valueOf(response.getCases().getActive()));
                 bottomCriticalCasesValue.setText(String.valueOf(response.getCases().getCritical()));
@@ -187,9 +183,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
                 bottomTotalCasesValue.setText(String.valueOf(response.getCases().getTotal()));
                 bottomNewDeathValue.setText(String.valueOf(response.getDeaths().getNew()));
                 bottomTotalDeathValue.setText(String.valueOf(response.getDeaths().getTotal()));
-
             }
-
             @Override
             public void onError(String error) {
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
@@ -198,8 +192,9 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     }
 
     private void fillViewsData(Map<String, Object> passedCountryData){
+
         bottomSheetCountryName.setText(String.valueOf(passedCountryData.get(getString(R.string.country_name))));
-        bottomSheetDayDate.setText(String.valueOf(passedCountryData.get(getString(R.string.day_date))));
+        bottomSheetDayDate.setText(DateFormatter.formateResponsedDate(String.valueOf(passedCountryData.get(getString(R.string.day_date)))));
         bottomNewCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.new_cases_sheet))));
         bottomActiveCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.active_cases_sheet))));
         bottomCriticalCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.critical_cases_sheet))));

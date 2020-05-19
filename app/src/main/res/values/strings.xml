@@ -31,11 +31,7 @@
  <string name="new_death_sheet">new_death</string>
  <string name="total_death_sheet">total_death</string>
  <string name="flag_url_sheet">flag_url</string>
-
-
-
-
-
+    <string name="world">World</string>
 
 
 </resources>

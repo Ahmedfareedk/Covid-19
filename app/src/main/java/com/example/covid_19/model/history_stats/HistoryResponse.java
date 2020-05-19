@@ -1,30 +1,28 @@
 
-package com.example.covid_19.model.statistics.worldStatistics;
-
-
+package com.example.covid_19.model.history_stats;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Response {
+public class HistoryResponse {
 
     @SerializedName("cases")
-    private WorldCases mCases;
+    private HistoryCases mCases;
     @SerializedName("country")
     private String mCountry;
     @SerializedName("day")
     private String mDay;
     @SerializedName("deaths")
-    private WorldDeaths mDeaths;
+    private HistoryDeaths mDeaths;
     @SerializedName("tests")
-    private WorldTests mTests;
+    private HistoryTests mTests;
     @SerializedName("time")
     private String mTime;
 
-    public WorldCases getCases() {
+    public HistoryCases getCases() {
         return mCases;
     }
 
-    public void setCases(WorldCases cases) {
+    public void setCases(HistoryCases cases) {
         mCases = cases;
     }
 
@@ -44,19 +42,19 @@ public class Response {
         mDay = day;
     }
 
-    public WorldDeaths getDeaths() {
+    public HistoryDeaths getDeaths() {
         return mDeaths;
     }
 
-    public void setDeaths(WorldDeaths deaths) {
+    public void setDeaths(HistoryDeaths deaths) {
         mDeaths = deaths;
     }
 
-    public WorldTests getTests() {
+    public HistoryTests getTests() {
         return mTests;
     }
 
-    public void setTests(WorldTests tests) {
+    public void setTests(HistoryTests tests) {
         mTests = tests;
     }
 

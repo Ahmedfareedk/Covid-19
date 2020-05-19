@@ -65,13 +65,13 @@ public class Networking {
                 .addQueryParameter("day", date)
                 .addQueryParameter("country", countryName)
                 .build()
-                .getAsObject(HistoryStatistics.class, new ParsedRequestListener<HistoryStatistics>() {
+                .getAsObject(WorldStatistics.class, new ParsedRequestListener<WorldStatistics>() {
                     @Override
-                    public void onResponse(HistoryStatistics response) {
+                    public void onResponse(WorldStatistics response) {
 
                         if(response.getResponse().size() ==0 ){
 
-                            Toast.makeText(mContext, "Invalid Day!, Try another day", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "Invalid Day!, there is no data", Toast.LENGTH_LONG).show();
 
                         }else{
                             listener.onResponse(response.getResponse().get(0));
