@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class WorldResponse {
-
     @SerializedName("cases")
     private WorldCases mCases;
     @SerializedName("country")

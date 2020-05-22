@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.covid_19.R;
 import com.example.covid_19.callback.OnCountryDataListener;
 import com.example.covid_19.model.stats.Response;
-
 import com.example.covid_19.utils.Constants;
 import com.example.covid_19.utils.ParseJson;
 import com.squareup.picasso.Picasso;
@@ -25,7 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.CountriesHolder> implements Filterable {
+    @BindView(R.id.country_flag_image)
+    ImageView countryFlagImage;
+    @BindView(R.id.country_label_tv)
+    TextView countryLabelTv;
     private List<Response> countriesList;
     private List<Response> countriesTempList;
     private Context mContext;
@@ -45,6 +51,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     public CountriesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_item, parent, false);
         mContext = parent.getContext();
+        ButterKnife.bind(this, view);
         return new CountriesHolder(view);
     }
 
@@ -67,18 +74,18 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
 
         private CountriesHolder(@NonNull View itemView) {
             super(itemView);
-            countryLabel = itemView.findViewById(R.id.country_label_tv);
+            /*countryLabel = itemView.findViewById(R.id.country_label_tv);
             countryFlag = itemView.findViewById(R.id.country_flag_image);
-            countryFlag.setClipToOutline(true);
+          */  countryFlagImage.setClipToOutline(true);
         }
 
         private void bindViews(final Response model) {
-            countryLabel.setText(model.getCountry());
+            countryLabelTv.setText(model.getCountry());
             countryCode = ParseJson.readCountryCode(mContext, model.getCountry());
             Picasso.get().load(Constants.FlagIoApi.LOAD_FLAG_URL + countryCode + Constants.FlagIoApi.FLAG_STYLE)
                     .placeholder(R.drawable.broken_image)
                     .error(R.drawable.broken_image)
-                    .into(countryFlag);
+                    .into(countryFlagImage);
 
             itemView.setOnClickListener(this);
         }
@@ -101,8 +108,6 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
             listener.onCountryItemListener(countryData);
         }
     }
-
-
 
 
     @Override
