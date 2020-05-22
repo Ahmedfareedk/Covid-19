@@ -12,15 +12,21 @@ import android.view.MenuInflater;
 
 import com.example.covid_19.R;
 import com.example.covid_19.adapter.ViewPagerAdapter;
+import com.example.covid_19.callback.OnSaveCountry;
+import com.example.covid_19.model.SavedCountryModel;
+import com.example.covid_19.ui.countries.CountriesStateFragment;
+import com.example.covid_19.ui.saved.SavedCountriesFragment;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity /*implements OnSaveCountry */{
 
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private TabLayout tabLayout;
     private Toolbar toolbar;
+    private CountriesStateFragment countriesStateFragment;
+    private SavedCountriesFragment savedCountriesFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +38,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         tabLayout.setupWithViewPager(mViewPager);
         setSupportActionBar(toolbar);
+
+     //   savedCountriesFragment = SavedCountriesFragment.getInstance();
     }
 
 
+  /*  @Override
+    public void onSavedDateReponse(SavedCountryModel savedModel) {
+        savedCountriesFragment.insertSavedCountry(savedModel);
+    }*/
 }
