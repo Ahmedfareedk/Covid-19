@@ -20,18 +20,19 @@
     <string name="death_label">Death</string>
 
 
- //string keys of HashMap to reach from activity
- <string name="country_name">country_name</string>
- <string name="day_date">day_date</string>
- <string name="new_cases_sheet">new_cases</string>
- <string name="active_cases_sheet">active_cases</string>
- <string name="critical_cases_sheet">critical_cases</string>
- <string name="recovered_cases_sheet">recovered_cases</string>
- <string name="total_cases_sheet">total_cases</string>
- <string name="new_death_sheet">new_death</string>
- <string name="total_death_sheet">total_death</string>
- <string name="flag_url_sheet">flag_url</string>
+    //string keys of HashMap to reach from activity
+    <string name="country_name">country_name</string>
+    <string name="day_date">day_date</string>
+    <string name="new_cases_sheet">new_cases</string>
+    <string name="active_cases_sheet">active_cases</string>
+    <string name="critical_cases_sheet">critical_cases</string>
+    <string name="recovered_cases_sheet">recovered_cases</string>
+    <string name="total_cases_sheet">total_cases</string>
+    <string name="new_death_sheet">new_death</string>
+    <string name="total_death_sheet">total_death</string>
+    <string name="flag_url_sheet">flag_url</string>
     <string name="world">World</string>
+    <string name="favourite">Save</string>
 
 
 </resources>

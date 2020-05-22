@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,13 +21,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.example.covid_19.R;
 import com.example.covid_19.adapter.CountriesAdapter;
 import com.example.covid_19.callback.OnCountryListener;
+import com.example.covid_19.database.SavedCountriesDatabase;
+import com.example.covid_19.model.SavedCountryModel;
 import com.example.covid_19.model.statistics.worldStatistics.WorldResponse;
-import com.example.covid_19.model.statistics.worldStatistics.WorldStatistics;
-import com.example.covid_19.model.stats.Response;
 import com.example.covid_19.model.stats.Statistics;
 import com.example.covid_19.network.Networking;
 import com.example.covid_19.utils.DateFormatter;
@@ -44,9 +46,12 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class CountriesStateFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
-    @Nullable
+
+
     @BindView(R.id.countries_recycler_view)
     RecyclerView countriesRecyclerView;
+
+
     @BindView(R.id.close_dialog)
     ImageView closeDialog;
     @BindView(R.id.bottom_sheet_flag_image)
@@ -71,17 +76,23 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     TextView bottomNewDeathValue;
     @BindView(R.id.bottom_total_death_value)
     TextView bottomTotalDeathValue;
+    @BindView(R.id.favourite_btn)
+    CheckBox saveCountryBtn;
     private CountriesAdapter countriesAdapter;
+    private SavedCountriesDatabase savedDatabase;
 
+    private static CountriesStateFragment countriesFragmentInstance;
 
 
     public CountriesStateFragment() {
         // Required empty public constructor
     }
 
-    public static CountriesStateFragment createInstance(int page, String title) {
-        CountriesStateFragment fragment = new CountriesStateFragment();
-        return fragment;
+    public static CountriesStateFragment createInstance() {
+        if (countriesFragmentInstance == null) {
+            countriesFragmentInstance = new CountriesStateFragment();
+        }
+        return countriesFragmentInstance;
     }
 
     @Override
@@ -95,9 +106,11 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_countries_state, container, false);
-        ButterKnife.bind(getActivity(), view);
+        //ButterKnife.bind(this, view);
+        savedDatabase = Room.databaseBuilder(getActivity(), SavedCountriesDatabase.class, "countries").allowMainThreadQueries().build();
 
-        Networking.fetchCountry(new OnCountryListener<Statistics>() {
+
+        Networking.fetchCountryStatistics(new OnCountryListener<Statistics>() {
 
             @Override
             public void onResponse(Statistics response) {
@@ -118,6 +131,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         super.onViewCreated(view, savedInstanceState);
         countriesRecyclerView = view.findViewById(R.id.countries_recycler_view);
         countriesRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false));
+
         setHasOptionsMenu(true);
     }
 
@@ -171,11 +185,11 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
         String date = DateFormatter.dateFormatter(dayOfMonth, month, year);
-        Networking.fetchCountryDate(getContext(), date, bottomSheetCountryName.getText().toString(),new OnCountryListener<WorldResponse>() {
+        Networking.fetchCountryHistoryByDate(getContext(), date, bottomSheetCountryName.getText().toString(), new OnCountryListener<WorldResponse>() {
             @Override
             public void onResponse(WorldResponse response) {
 
-                bottomSheetDayDate.setText(DateFormatter.monthName(dayOfMonth,month,year));
+                bottomSheetDayDate.setText(DateFormatter.monthName(dayOfMonth, month, year));
                 bottomNewCasesValue.setText(response.getCases().getNew());
                 bottomActiveCasesValue.setText(String.valueOf(response.getCases().getActive()));
                 bottomCriticalCasesValue.setText(String.valueOf(response.getCases().getCritical()));
@@ -184,6 +198,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
                 bottomNewDeathValue.setText(String.valueOf(response.getDeaths().getNew()));
                 bottomTotalDeathValue.setText(String.valueOf(response.getDeaths().getTotal()));
             }
+
             @Override
             public void onError(String error) {
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
@@ -191,7 +206,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         });
     }
 
-    private void fillViewsData(Map<String, Object> passedCountryData){
+    private void fillViewsData(Map<String, Object> passedCountryData) {
 
         bottomSheetCountryName.setText(String.valueOf(passedCountryData.get(getString(R.string.country_name))));
         bottomSheetDayDate.setText(DateFormatter.formateResponsedDate(String.valueOf(passedCountryData.get(getString(R.string.day_date)))));
@@ -204,5 +219,13 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         bottomTotalDeathValue.setText(String.valueOf(passedCountryData.get(getString(R.string.total_death_sheet))));
 
         Picasso.get().load(String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))).into(bottomSheetFlagImage);
+        saveCountryBtn.setOnClickListener(v -> {
+            savedDatabase.savedCountriesDao().insertCountry(new SavedCountryModel(bottomSheetCountryName.getText().toString(), String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))));
+            Toast.makeText(getContext(), "inserted", Toast.LENGTH_SHORT).show();
+        });
+
+
     }
+
+
 }

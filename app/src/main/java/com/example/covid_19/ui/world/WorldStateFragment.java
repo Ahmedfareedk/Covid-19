@@ -28,18 +28,18 @@ public class WorldStateFragment extends Fragment {
     private TextView totalDeathsTV;
     private TextView dayDateTV;
 
+    private static   WorldStateFragment worldFragment;
+
 
     public WorldStateFragment() {
         // Required empty public constructor
     }
 
-    public static WorldStateFragment createInstance(int page, String title) {
-        WorldStateFragment fragment = new WorldStateFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someText", title);
-        fragment.setArguments(args);
-        return fragment;
+    public static WorldStateFragment createInstance() {
+        if(worldFragment == null) {
+            worldFragment  = new WorldStateFragment();
+        }
+        return worldFragment;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class WorldStateFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_world_state, container, false);
 
-        Networking.fetch(new OnCasesLisneter<WorldResponse>() {
+        Networking.fetchWorldStatistics(new OnCasesLisneter<WorldResponse>() {
             @Override
             public void onResponse(WorldResponse cases) {
                 newCasesTV.setText(cases.getCases().getNew());

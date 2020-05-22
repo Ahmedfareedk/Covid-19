@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.covid_19.ui.countries.CountriesStateFragment;
+import com.example.covid_19.ui.saved.SavedCountriesFragment;
 import com.example.covid_19.ui.world.WorldStateFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -25,13 +26,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                fragment = WorldStateFragment.createInstance(1, "World");
+                fragment = WorldStateFragment.createInstance();
                 break;
             case 1:
-                fragment = CountriesStateFragment.createInstance(2, "Countries");
+                fragment = CountriesStateFragment.createInstance();
                 break;
             case 2:
-                fragment = WorldStateFragment.createInstance(3, "World");
+                fragment = SavedCountriesFragment.getInstance();
                 break;
                 default:
                     return null;
@@ -42,7 +43,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return NUM_ITEMS;
-
     }
 
     @Nullable
