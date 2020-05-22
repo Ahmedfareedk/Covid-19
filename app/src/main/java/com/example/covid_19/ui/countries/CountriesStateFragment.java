@@ -26,6 +26,7 @@ import androidx.room.Room;
 import com.example.covid_19.R;
 import com.example.covid_19.adapter.CountriesAdapter;
 import com.example.covid_19.callback.OnCountryListener;
+import com.example.covid_19.callback.OnSaveCountry;
 import com.example.covid_19.database.SavedCountriesDatabase;
 import com.example.covid_19.model.SavedCountryModel;
 import com.example.covid_19.model.statistics.worldStatistics.WorldResponse;
@@ -48,8 +49,7 @@ import butterknife.ButterKnife;
 public class CountriesStateFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
 
-    @BindView(R.id.countries_recycler_view)
-    RecyclerView countriesRecyclerView;
+   private RecyclerView countriesRecyclerView;
 
 
     @BindView(R.id.close_dialog)
@@ -80,6 +80,8 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     CheckBox saveCountryBtn;
     private CountriesAdapter countriesAdapter;
     private SavedCountriesDatabase savedDatabase;
+    private OnSaveCountry onSaveCountryListener;
+
 
     private static CountriesStateFragment countriesFragmentInstance;
 
@@ -131,7 +133,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         super.onViewCreated(view, savedInstanceState);
         countriesRecyclerView = view.findViewById(R.id.countries_recycler_view);
         countriesRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false));
-
+        //this.onSaveCountryListener = (OnSaveCountry) getActivity();
         setHasOptionsMenu(true);
     }
 
@@ -219,13 +221,16 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         bottomTotalDeathValue.setText(String.valueOf(passedCountryData.get(getString(R.string.total_death_sheet))));
 
         Picasso.get().load(String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))).into(bottomSheetFlagImage);
-        saveCountryBtn.setOnClickListener(v -> {
-            savedDatabase.savedCountriesDao().insertCountry(new SavedCountryModel(bottomSheetCountryName.getText().toString(), String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))));
-            Toast.makeText(getContext(), "inserted", Toast.LENGTH_SHORT).show();
-        });
 
+
+       /* saveCountryBtn.setOnClickListener(v -> {
+            onSaveCountryListener.onSavedDateReponse(new SavedCountryModel(bottomSheetCountryName.getText().toString(), String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))));
+            //savedDatabase.savedCountriesDao().insertCountry(new SavedCountryModel(bottomSheetCountryName.getText().toString(), String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))));
+            Toast.makeText(getContext(), "inserted", Toast.LENGTH_SHORT).show();
+        });*/
 
     }
+
 
 
 }
