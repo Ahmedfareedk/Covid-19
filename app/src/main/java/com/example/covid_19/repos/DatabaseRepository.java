@@ -10,13 +10,19 @@ import com.example.covid_19.model.SavedCountryModel;
 import java.util.List;
 
 public class DatabaseRepository {
-    private CountriesDao countriesDao;
+    private static  CountriesDao countriesDao;
     private LiveData<List<SavedCountryModel>> allSavedCountries;
+    private SavedCountryModel model;
+
+    private static List<SavedCountryModel> names;
+
 
     public DatabaseRepository(Application application) {
+     //   model = new SavedCountryModel(null, null);
         SavedCountriesDatabase database = SavedCountriesDatabase.getInstance(application);
         countriesDao = database.savedCountriesDao();
         allSavedCountries = countriesDao.getAllSavedCountries();
+       // names = countriesDao.isExists(model.getSavedCountryName());
     }
 
     public void insert(SavedCountryModel country){
@@ -29,8 +35,12 @@ public class DatabaseRepository {
 
     public void deleAll(){
         new DeleteAllCountryAsynctask(countriesDao).execute();
-
     }
+
+    public List<SavedCountryModel> isExists(String name){
+        return countriesDao.isExists(name);
+    }
+
     public LiveData<List<SavedCountryModel>> getAllCountries(){
         return allSavedCountries;
     }
@@ -77,4 +87,43 @@ public class DatabaseRepository {
             return null;
         }
     }
+
+    private static class CheckIfExists extends AsyncTask<List<SavedCountryModel>, Void, String> {
+        private CountriesDao countriesDao;
+
+
+        public CheckIfExists(CountriesDao countriesDao){
+            this.countriesDao =countriesDao;
+        }
+        @Override
+        protected String doInBackground(List<SavedCountryModel>... lists) {
+            countriesDao.isExists(lists[0].get(0).getSavedCountryName());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+        }
+    }
+
+   /* private static class CheckIfExists extends AsyncTask<String, Void, String>{
+        private CountriesDao countriesDao;
+
+        public CheckIfExists(CountriesDao countriesDao){
+            this.countriesDao = countriesDao;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            countriesDao.isExists(strings[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }*/
 }

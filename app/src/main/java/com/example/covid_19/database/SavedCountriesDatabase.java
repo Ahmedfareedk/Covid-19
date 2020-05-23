@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.covid_19.model.SavedCountryModel;
 
-@Database(entities = {SavedCountryModel.class}, version = 1, exportSchema = false)
+@Database(entities = {SavedCountryModel.class}, version = 2, exportSchema = false)
 public abstract class SavedCountriesDatabase extends RoomDatabase {
 
     private static  SavedCountriesDatabase countriesDatabaseInstance;

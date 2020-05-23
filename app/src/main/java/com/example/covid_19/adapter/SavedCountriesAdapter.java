@@ -1,4 +1,4 @@
-package com.example.covid_19.ui.saved;
+package com.example.covid_19.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +16,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class SavedCountriesAdapter extends RecyclerView.Adapter<SavedCountriesAdapter.SavedCountriesHolder> {
-   // @BindView(R.id.saved_country_flag_image)
-    ImageView savedCountryFlagImage;
-   // @BindView(R.id.saved_country_label_tv)
-    TextView savedCountryLabel;
+
     private List<SavedCountryModel> savedList = new ArrayList<>();
 
     public void setSavedList(List<SavedCountryModel> savedList){
@@ -49,6 +43,8 @@ public class SavedCountriesAdapter extends RecyclerView.Adapter<SavedCountriesAd
     }
 
     public class SavedCountriesHolder extends RecyclerView.ViewHolder {
+        private ImageView savedCountryFlagImage;
+        private TextView savedCountryLabel;
 
         private SavedCountriesHolder(@NonNull View itemView) {
             super(itemView);
