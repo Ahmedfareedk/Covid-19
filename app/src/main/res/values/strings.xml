@@ -33,6 +33,9 @@
     <string name="flag_url_sheet">flag_url</string>
     <string name="world">World</string>
     <string name="favourite">Save</string>
+    <string name="world_tab">World</string>
+    <string name="countries_tab">Countries</string>
+    <string name="saved_tab">Saved</string>
 
 
 </resources>

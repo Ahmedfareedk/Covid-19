@@ -28,9 +28,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.CountriesHolder> implements Filterable {
-    @BindView(R.id.country_flag_image)
+    //@BindView(R.id.country_flag_image)
     ImageView countryFlagImage;
-    @BindView(R.id.country_label_tv)
+    //@BindView(R.id.country_label_tv)
     TextView countryLabelTv;
     private List<Response> countriesList;
     private List<Response> countriesTempList;
@@ -51,7 +51,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     public CountriesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_item, parent, false);
         mContext = parent.getContext();
-        ButterKnife.bind(this, view);
+        //ButterKnife.bind(this, view);
         return new CountriesHolder(view);
     }
 
@@ -74,18 +74,18 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
 
         private CountriesHolder(@NonNull View itemView) {
             super(itemView);
-            /*countryLabel = itemView.findViewById(R.id.country_label_tv);
+            countryLabel = itemView.findViewById(R.id.country_label_tv);
             countryFlag = itemView.findViewById(R.id.country_flag_image);
-          */  countryFlagImage.setClipToOutline(true);
+            countryFlag.setClipToOutline(true);
         }
 
         private void bindViews(final Response model) {
-            countryLabelTv.setText(model.getCountry());
+            countryLabel.setText(model.getCountry());
             countryCode = ParseJson.readCountryCode(mContext, model.getCountry());
             Picasso.get().load(Constants.FlagIoApi.LOAD_FLAG_URL + countryCode + Constants.FlagIoApi.FLAG_STYLE)
                     .placeholder(R.drawable.broken_image)
                     .error(R.drawable.broken_image)
-                    .into(countryFlagImage);
+                    .into(countryFlag);
 
             itemView.setOnClickListener(this);
         }
