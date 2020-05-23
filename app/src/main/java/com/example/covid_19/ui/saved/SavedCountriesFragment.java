@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.covid_19.R;
+import com.example.covid_19.adapter.SavedCountriesAdapter;
 import com.example.covid_19.model.SavedCountryModel;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
+import com.mindorks.nybus.event.Channel;
 
 import butterknife.ButterKnife;
 
@@ -32,7 +34,8 @@ public class SavedCountriesFragment extends Fragment{
     private  SavedCountriesViewModel viewModel;
     private SavedCountriesAdapter countriesAdapter;
     private static SavedCountriesFragment instance;
-    private SavedCountryModel savedCountryModel;
+    private String saved;
+
 
     public SavedCountriesFragment() {
         // Required empty public constructor
@@ -50,12 +53,10 @@ public class SavedCountriesFragment extends Fragment{
         savedRecyclerView.setHasFixedSize(true);
         savedRecyclerView.setAdapter(countriesAdapter);
 
-
-
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(SavedCountriesViewModel.class);
-        //viewModel.insert(savedCountryModel);
         viewModel.getAllCountries().observe(getViewLifecycleOwner(), savedCountryModels -> {
             countriesAdapter.setSavedList(savedCountryModels);
+            countriesAdapter.notifyDataSetChanged();
             Toast.makeText(getContext(), "Say Hi to LiveData!", Toast.LENGTH_SHORT).show();
 
         });
@@ -79,19 +80,30 @@ public class SavedCountriesFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        NYBus.get().register(this, "one");
+        NYBus.get().register(this, Channel.ONE, Channel.TWO);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        NYBus.get().unregister(this, "one");
+        NYBus.get().unregister(this, Channel.ONE, Channel.TWO);
     }
 
-    @Subscribe(channelId = "one")
-    public void insertSavedCountry(SavedCountryModel savedModel){
-        viewModel.insert(savedModel);
-        savedCountryModel = savedModel;
-        Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
+    @Subscribe(channelId = Channel.ONE )
+    public void insertSavedCountry(SavedCountryModel savedModel) {
+        if (saved.equals("unSaved")) {
+            viewModel.insert(savedModel);
+            Toast.makeText(getActivity(), "Saved to your favorite List", Toast.LENGTH_LONG).show();
+        } else if(saved.equals("saved")) {
+            viewModel.delete(savedModel);
+            Toast.makeText(getActivity(), "Removed from your favorite List", Toast.LENGTH_LONG).show();
+        }
     }
+
+    @Subscribe(channelId = Channel.TWO)
+    public void listenToIsSaved(String isSaved){
+        saved = isSaved;
+    }
+
+
 }

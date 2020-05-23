@@ -2,6 +2,7 @@ package com.example.covid_19.ui.countries;
 
 
 import android.app.DatePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,12 +30,17 @@ import com.example.covid_19.model.SavedCountryModel;
 import com.example.covid_19.model.statistics.worldStatistics.WorldResponse;
 import com.example.covid_19.model.stats.Statistics;
 import com.example.covid_19.network.Networking;
+import com.example.covid_19.repos.DatabaseRepository;
 import com.example.covid_19.utils.DateFormatter;
+import com.example.covid_19.utils.LoadingDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.mindorks.nybus.NYBus;
+import com.mindorks.nybus.event.Channel;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -52,7 +58,7 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     RecyclerView countriesRecyclerView;
 
 
-   @Nullable
+    @Nullable
     @BindView(R.id.close_dialog)
     ImageView closeDialog;
     @BindView(R.id.bottom_sheet_flag_image)
@@ -80,8 +86,11 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     @BindView(R.id.favourite_btn)
     CheckBox saveCountryBtn;
     private CountriesAdapter countriesAdapter;
+    private LoadingDialog loadingDialog;
     private boolean isSaved;
 
+    private List<SavedCountryModel> names;
+    private List<SavedCountryModel> filteredNames;
 
 
     private static CountriesStateFragment countriesFragmentInstance;
@@ -133,8 +142,9 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //this.onSaveCountryListener = (OnSaveCountry) getActivity();
-       setHasOptionsMenu(true);
+        loadingDialog = new LoadingDialog(getActivity());
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -209,6 +219,8 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     }
 
     private void fillViewsData(Map<String, Object> passedCountryData) {
+        names = new ArrayList<>();
+        filteredNames = new ArrayList<>();
 
         bottomSheetCountryName.setText(String.valueOf(passedCountryData.get(getString(R.string.country_name))));
         bottomSheetDayDate.setText(DateFormatter.formateResponsedDate(String.valueOf(passedCountryData.get(getString(R.string.day_date)))));
@@ -222,11 +234,40 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
 
         Picasso.get().load(String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))).into(bottomSheetFlagImage);
 
+        new Thread(() -> {
+            DatabaseRepository databaseRepository = new DatabaseRepository(CountriesStateFragment.this.getActivity().getApplication());
+            names = databaseRepository.isExists(String.valueOf(passedCountryData.get(CountriesStateFragment.this.getString(R.string.country_name))));
+            getActivity().runOnUiThread(() -> {
+                filteredNames.addAll(names);
+                if (filteredNames.size() > 0) {
+                    saveCountryBtn.setChecked(true);
+                    saveCountryBtn.setText("Saved");
+                    saveCountryBtn.setTextColor(getResources().getColor(R.color.favorited_stroke));
+                }else{
+                    saveCountryBtn.setChecked(false);
+                    saveCountryBtn.setText("Save");
+                    saveCountryBtn.setTextColor(getResources().getColor(R.color.dark_save_btn));
+                }
+            });
+        }).start();
+
 
         saveCountryBtn.setOnClickListener(v -> {
+           String isThatSaved = "unSaved";
+            if(!saveCountryBtn.isChecked()){
+                saveCountryBtn.setText("Save");
+                saveCountryBtn.setTextColor(getResources().getColor(R.color.dark_save_btn));
+                isThatSaved = "saved";
+
+            }else{
+                saveCountryBtn.setText("Saved");
+                saveCountryBtn.setTextColor(getResources().getColor(R.color.favorited_stroke));
+                isThatSaved = "unSaved";
+
+            }
+            NYBus.get().post(isThatSaved, Channel.TWO);
             NYBus.get().post(new SavedCountryModel(bottomSheetCountryName.getText().toString(),
-                    String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))), "one");
-             Toast.makeText(getContext(), "inserted", Toast.LENGTH_SHORT).show();
+                    String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))), Channel.ONE);
         });
 
     }
