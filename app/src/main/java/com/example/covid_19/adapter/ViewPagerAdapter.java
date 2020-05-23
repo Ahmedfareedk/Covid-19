@@ -22,17 +22,17 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = null;
+        Fragment fragment;
         switch (position)
         {
             case 0:
-                fragment = WorldStateFragment.createInstance();
+                fragment = new WorldStateFragment();
                 break;
             case 1:
-                fragment = CountriesStateFragment.createInstance();
+                fragment = new CountriesStateFragment();
                 break;
             case 2:
-                fragment = SavedCountriesFragment.getInstance();
+                fragment = new SavedCountriesFragment();
                 break;
                 default:
                     return null;

@@ -20,10 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SavedCountriesAdapter extends RecyclerView.Adapter<SavedCountriesAdapter.SavedCountriesHolder> {
-    @BindView(R.id.saved_country_flag_image)
+   // @BindView(R.id.saved_country_flag_image)
     ImageView savedCountryFlagImage;
-    @BindView(R.id.saved_country_label_tv)
-    TextView savedCountryLabelTv;
+   // @BindView(R.id.saved_country_label_tv)
+    TextView savedCountryLabel;
     private List<SavedCountryModel> savedList = new ArrayList<>();
 
     public void setSavedList(List<SavedCountryModel> savedList){
@@ -34,7 +34,7 @@ public class SavedCountriesAdapter extends RecyclerView.Adapter<SavedCountriesAd
     @Override
     public SavedCountriesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_country_item, parent, false);
-        ButterKnife.bind(this, view);
+       // ButterKnife.bind(this, view);
         return new SavedCountriesHolder(view);
     }
 
@@ -52,16 +52,12 @@ public class SavedCountriesAdapter extends RecyclerView.Adapter<SavedCountriesAd
 
         private SavedCountriesHolder(@NonNull View itemView) {
             super(itemView);
-          /*  countryLabelTv = itemView.findViewById(R.id.country_label_tv);
-            savedCountryFlagImage = itemView.findViewById(R.id.country_flag_image);
-      */  }
-
-        private void bindViews(SavedCountryModel model) {
-
-            savedCountryLabelTv.setText(model.getSavedCountryName());
+            savedCountryLabel = itemView.findViewById(R.id.saved_country_label_tv);
+            savedCountryFlagImage = itemView.findViewById(R.id.saved_country_flag_image);
+        }
+        private void bindViews(SavedCountryModel model){
+            savedCountryLabel.setText(model.getSavedCountryName());
            Picasso.get().load(model.getSavedCountryFlagUrl()).into(savedCountryFlagImage);
         }
     }
-
-
 }
