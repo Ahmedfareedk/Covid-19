@@ -48,4 +48,6 @@ public class SavedCountryModel {
     public void setSavedCountryId(int savedCountryId) {
         this.savedCountryId = savedCountryId;
     }
+
+
 }

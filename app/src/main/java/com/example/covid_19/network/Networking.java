@@ -11,6 +11,7 @@ import com.example.covid_19.callback.OnCountryListener;
 import com.example.covid_19.model.statistics.worldStatistics.WorldStatistics;
 import com.example.covid_19.model.stats.Statistics;
 import com.example.covid_19.utils.Constants;
+import com.example.covid_19.utils.LoadingDialog;
 
 public class Networking {
 
