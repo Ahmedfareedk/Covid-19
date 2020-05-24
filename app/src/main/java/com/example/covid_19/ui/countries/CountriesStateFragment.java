@@ -86,15 +86,10 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
     @BindView(R.id.favourite_btn)
     CheckBox saveCountryBtn;
     private CountriesAdapter countriesAdapter;
-    private LoadingDialog loadingDialog;
-    private boolean isSaved;
 
     private List<SavedCountryModel> names;
-    private List<SavedCountryModel> filteredNames;
-
 
     private static CountriesStateFragment countriesFragmentInstance;
-
 
     public CountriesStateFragment() {
         // Required empty public constructor
@@ -122,13 +117,17 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         countriesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         countriesRecyclerView.setHasFixedSize(true);
 
+
+
+
+
         Networking.fetchCountryStatistics(new OnCountryListener<Statistics>() {
 
             @Override
             public void onResponse(Statistics response) {
+
                 countriesAdapter = new CountriesAdapter(getActivity(), response.getResponse(), countryData -> buildBottomSheetView(countryData, container));
                 countriesRecyclerView.setAdapter(countriesAdapter);
-                //countriesAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -136,14 +135,14 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
                 Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
             }
         });
+
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadingDialog = new LoadingDialog(getActivity());
-
         setHasOptionsMenu(true);
     }
 
@@ -152,6 +151,9 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_item, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem deleteAll= menu.findItem(R.id.action_delete_all);
+        deleteAll.setVisible(false);
+
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -220,8 +222,8 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
 
     private void fillViewsData(Map<String, Object> passedCountryData) {
         names = new ArrayList<>();
-        filteredNames = new ArrayList<>();
 
+        //fetch data to bottom sheet items
         bottomSheetCountryName.setText(String.valueOf(passedCountryData.get(getString(R.string.country_name))));
         bottomSheetDayDate.setText(DateFormatter.formateResponsedDate(String.valueOf(passedCountryData.get(getString(R.string.day_date)))));
         bottomNewCasesValue.setText(String.valueOf(passedCountryData.get(getString(R.string.new_cases_sheet))));
@@ -234,12 +236,41 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
 
         Picasso.get().load(String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))).into(bottomSheetFlagImage);
 
+        //run a query in a background thread to check if the country exists in the saved list
+        queryIfCountrySaved();
+
+
+        saveCountryBtn.setOnClickListener(v -> {
+           String isSaved;
+
+           //change save button style when saved and unsaved
+            if(!saveCountryBtn.isChecked()){
+                saveCountryBtn.setText("Save");
+                saveCountryBtn.setTextColor(getResources().getColor(R.color.dark_save_btn));
+                isSaved = "saved";
+
+            }else{
+                saveCountryBtn.setText("Saved");
+                saveCountryBtn.setTextColor(getResources().getColor(R.color.favorited_stroke));
+                isSaved = "unSaved";
+
+            }
+
+            //send to saveFragment country model object and its case to decide delete or insert
+            NYBus.get().post(isSaved, Channel.TWO);
+            NYBus.get().post(new SavedCountryModel(bottomSheetCountryName.getText().toString(),
+                    String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))), Channel.ONE);
+        });
+
+    }
+
+    private void queryIfCountrySaved(){
         new Thread(() -> {
             DatabaseRepository databaseRepository = new DatabaseRepository(CountriesStateFragment.this.getActivity().getApplication());
-            names = databaseRepository.isExists(String.valueOf(passedCountryData.get(CountriesStateFragment.this.getString(R.string.country_name))));
+            names = databaseRepository.isExists(bottomSheetCountryName.getText().toString());
             getActivity().runOnUiThread(() -> {
-                filteredNames.addAll(names);
-                if (filteredNames.size() > 0) {
+
+                if (names.size() > 0) {
                     saveCountryBtn.setChecked(true);
                     saveCountryBtn.setText("Saved");
                     saveCountryBtn.setTextColor(getResources().getColor(R.color.favorited_stroke));
@@ -250,27 +281,6 @@ public class CountriesStateFragment extends Fragment implements DatePickerDialog
                 }
             });
         }).start();
-
-
-        saveCountryBtn.setOnClickListener(v -> {
-           String isThatSaved = "unSaved";
-            if(!saveCountryBtn.isChecked()){
-                saveCountryBtn.setText("Save");
-                saveCountryBtn.setTextColor(getResources().getColor(R.color.dark_save_btn));
-                isThatSaved = "saved";
-
-            }else{
-                saveCountryBtn.setText("Saved");
-                saveCountryBtn.setTextColor(getResources().getColor(R.color.favorited_stroke));
-                isThatSaved = "unSaved";
-
-            }
-            NYBus.get().post(isThatSaved, Channel.TWO);
-            NYBus.get().post(new SavedCountryModel(bottomSheetCountryName.getText().toString(),
-                    String.valueOf(passedCountryData.get(getString(R.string.flag_url_sheet)))), Channel.ONE);
-        });
-
     }
-
 
 }

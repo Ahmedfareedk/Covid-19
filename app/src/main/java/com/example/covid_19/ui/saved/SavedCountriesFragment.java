@@ -3,12 +3,16 @@ package com.example.covid_19.ui.saved;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -50,17 +54,13 @@ public class SavedCountriesFragment extends Fragment{
         countriesAdapter = new SavedCountriesAdapter();
         savedRecyclerView = view.findViewById(R.id.saved_recycler_view);
         savedRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false));
-        savedRecyclerView.setHasFixedSize(true);
+       // savedRecyclerView.setHasFixedSize(true);
         savedRecyclerView.setAdapter(countriesAdapter);
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(SavedCountriesViewModel.class);
         viewModel.getAllCountries().observe(getViewLifecycleOwner(), savedCountryModels -> {
             countriesAdapter.setSavedList(savedCountryModels);
-            countriesAdapter.notifyDataSetChanged();
-            Toast.makeText(getContext(), "Say Hi to LiveData!", Toast.LENGTH_SHORT).show();
-
         });
-
         return view;
     }
 
@@ -68,7 +68,7 @@ public class SavedCountriesFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        setHasOptionsMenu(true);
     }
 
     public static SavedCountriesFragment createInstance() {
@@ -105,5 +105,20 @@ public class SavedCountriesFragment extends Fragment{
         saved = isSaved;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_item, menu);
+        MenuItem search_item = menu.findItem(R.id.action_search);
+        search_item.setVisible(false);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.action_delete_all) {
+            viewModel.deleteAll();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
